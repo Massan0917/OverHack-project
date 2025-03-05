@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
-    <h1>Hello World!!!{{ message }}</h1>
+	<img alt="Vue logo" src="../assets/logo.png">
+	<h1>Hello World!!!{{ message }}</h1>
   </div>
 </template>
 
