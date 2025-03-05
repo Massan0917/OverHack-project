@@ -3,6 +3,8 @@
 リポジトリのコピー  
 ```bash
 git clone git@github.com:Massan0917/OverHack-project.git
+```
+```bash
 cd OverHack-project
 ```
 
@@ -21,14 +23,14 @@ docker compose exec frontend yarn install
 docker compose exec frontend vue create .
 ```
 
-いろんなことを聞かれるので、以下のように答える
+上記コマンドを実行すると、いろんなことを聞かれるので、以下のように答える
 すべて聞かれない場合があるので、質問内容を確認。
 ```bash
 → Your connection to the default yarn registry seems to be slow.
    Use https://registry.npmmirror.com/ for faster installation? → Yes
-→ Generate project in current directory? Yes
-→ Please pick a preset Vue3
-→ Pick the package manager to use when installing dependencies: Use Yarn 
+→ Generate project in current directory? → Yes
+→ Please pick a preset → Vue3....
+→ Pick the package manager to use when installing dependencies: → Use Yarn 
 ```
 
 プロジェクトの作成に伴い、HelloWorld.vueが作成されるので、削除する
@@ -40,3 +42,6 @@ git checkout frontend/app/src/components/HelloWorld.vue
 ```bash
 docker compose exec frontend yarn serve
 ```
+
+`localhost:80'にアクセスして、Vueの画面が表示されればOK
+
