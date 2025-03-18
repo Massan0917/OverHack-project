@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional
 from pydantic import BaseModel
 
@@ -9,6 +10,8 @@ class PostBase(BaseModel):
     user_name: str
     comment: str
     GPT_comment: str
+    created_at: datetime
+    updated_at: datetime
 
 class PostCreate(PostBase):
     date: str
@@ -26,6 +29,8 @@ class Post(PostBase):
     user_name: str
     comment: str
     GPT_comment: str
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         orm_mode = True

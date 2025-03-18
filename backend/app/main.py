@@ -15,7 +15,7 @@ app.add_middleware(
 )
 
 app.include_router(post.router)
-# app.include_router(object_detection.router)
+app.include_router(object_detection.router)
 app.include_router(query.router)
 
 @app.get("/api/hoge")
