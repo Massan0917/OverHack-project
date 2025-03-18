@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
-from routers import post, query, object_detection
+from src.routers import post, query, object_detection
+from src.database.database import Base, engine
 
 app = FastAPI()
 
@@ -14,7 +15,7 @@ app.add_middleware(
 )
 
 app.include_router(post.router)
-app.include_router(object_detection.router)
+# app.include_router(object_detection.router)
 app.include_router(query.router)
 
 @app.get("/api/hoge")
@@ -25,6 +26,8 @@ def index1():
 @app.get("/api/fuga")
 def index2():
     return {"message": "fugafuga"}
+
+Base.metadata.create_all(bind=engine)
 
 
 # Dockerfileからuvicorn(FastAPIサーバー）を起動する

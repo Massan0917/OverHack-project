@@ -9,7 +9,7 @@ class Image(BaseModel):
 
 ### 物体検出API
 @router.get("/api/face-detect")
-async def face_detect(image: Image):
+def face_detect(image: Image):
     return {
         "bounded_boxes": [
             {
