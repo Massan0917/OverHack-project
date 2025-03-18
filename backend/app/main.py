@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
+from routers import post, query, object_detection
 
 app = FastAPI()
 
@@ -12,6 +13,9 @@ app.add_middleware(
     allow_headers=['*']
 )
 
+app.include_router(post.router)
+app.include_router(object_detection.router)
+app.include_router(query.router)
 
 @app.get("/api/hoge")
 def index1():
