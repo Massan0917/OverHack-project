@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from src.database.database import get_db
 import src.database.crud as crud
-import src.database.models as models
+
 
 router = APIRouter()
+
+
 
 ### 画像閲覧API
 @router.get("/api/face-detect")
