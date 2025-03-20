@@ -31,20 +31,24 @@ def post(post: Post, db: Session = Depends(get_db)):
         )
     ).strftime('%Y%m%d')
 
-    input_path = '/app/images/upload/' + post.image_path
-    output_path = '/app/images/masked/' + post.image_path
+    # TODO
+    file_name = datetime.datetime.now(
+        datetime.timezone(
+            datetime.timedelta(hours=9),
+            'JST'
+        )
+    ).strftime('%Y%m%d%H%M%S')
 
-    detect_result: bool = detect_faces(input_path, output_path, post.bounding_boxes)
-
-    if not detect_result:
-        return {
-            "message": "Failed to detect faces."
-        }
+    output_url = detect_faces(
+        file_name,
+        post.image_path,
+        post.bounding_boxes
+    )
 
     post_param = PostCreate(
         date=date,
         img_path=post.image_path,
-        masked_img_path=post.image_path,
+        masked_img_path=output_url,
         user_name=post.name,
         comment=post.comment,
         GPT_comment=""

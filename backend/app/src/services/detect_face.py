@@ -1,27 +1,37 @@
 import numpy
 from matplotlib import pyplot, image
 from src.models.bounding_box import BoundingBox
+import requests
+import urllib
+from io import BytesIO
 
 
 
 # 画像の顔を保護する
 def detect_faces(
+    file_name: int,
     input_path: str,
-    output_path: str,
     bounding_boxes: list[BoundingBox],
 ) -> bool:
     # 画像を読み込み
-    img = image.imread(input_path).copy()
+    url = urllib.parse.unquote(input_path)
+    response = requests.get(url)
+    file_contents = BytesIO(response.content)
+    img = image.imread(file_contents, format="jpg").copy()
 
     for box in bounding_boxes:
         __detect_one_face(img, box)
 
     # 画像を保存
-    pyplot.imsave(output_path, img)
+    output_path = f"static/masked/{file_name}.jpg"
+    pyplot.imsave(f"{output_path}", img)
 
-    return True
+    output_url = "http://localhost:3000/" + output_path
+
+    return output_url
 
 def __detect_one_face(img: numpy.ndarray, box: BoundingBox) -> numpy.ndarray:
+    # TODO
 
     color = (1,0,0)
 
