@@ -1,13 +1,16 @@
-FROM python:3.9.2-buster
+FROM python:3.9-bookworm
 
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
-# pip installs
+RUN apt-get update && \
+    apt-get install -y libgl1 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY ./backend/requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /app
 
-# FastAPIの起動
-CMD ["python3.9", "/app/main.py"]
+CMD ["python3", "/app/main.py"]
