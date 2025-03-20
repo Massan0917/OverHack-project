@@ -1,2 +1,8 @@
 fastapi
 uvicorn[standard]
+pydantic
+sqlalchemy
+ultralytics
+opencv-python
+numpy
+matplotlib
