@@ -9,11 +9,11 @@ router = APIRouter()
 
 
 @router.get("/api/test/image")
-def image_test():
-    bouding_boxes: list[BoundingBox] = recognize_face('/app/images/upload/test01.jpg')
+def image_test(image_path: str):
+    bouding_boxes: list[BoundingBox] = recognize_face(image_path)
 
-    detect_faces(
-        '/app/images/upload/test01.jpg',
-        '/app/images/masked/test01.jpg',
-        bouding_boxes
-    )
+    output_path = detect_faces("test01", image_path, bouding_boxes)
+
+    return {
+        "output_path": output_path
+    }
