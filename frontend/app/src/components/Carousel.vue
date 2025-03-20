@@ -1,13 +1,15 @@
 <template>
-  <Carousel v-bind="config">
-    <Slide v-for="image in images" :key="image.id">
-        <img :src="image.url" alt="image" />
-    </Slide>
-
-    <template #addons>
-      <Navigation />
-    </template>
-  </Carousel>
+	<Carousel v-bind="config">
+		<Slide v-for="image in images" :key="image.id">
+        		<img :src="image.url" alt="image" />
+    		</Slide>
+		
+	</Carousel>
+	<Carousel v-bind="config">
+		<Slide v-for="image in images" :key="image.id">
+			{{image.id}}
+    		</Slide> 
+	</Carousel>
 </template>
 
 <script setup>
@@ -26,6 +28,7 @@ const config = {
     gap: 5,
     wrapAround: true,
 }
+
 </script>
 
 
