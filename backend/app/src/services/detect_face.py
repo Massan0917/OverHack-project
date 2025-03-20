@@ -4,6 +4,8 @@ import matplotlib.image as img
 from src.models.bounding_box import BoundingBox
 import urllib
 import cv2
+import os
+import random
 
 
 
@@ -20,11 +22,11 @@ def detect_faces(
     image_array = np.asarray(bytearray(response.read()), dtype=np.uint8)
     image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
 
-    # スタンプ画像を読み込む
-    stamp = cv2.imread("assets/images/stamp_test.png", cv2.IMREAD_UNCHANGED)
-
     # 合成（例: 中心(200, 150)、幅100、高さ80）
     for box in bounding_boxes:
+        # スタンプ画像を読み込む
+        stamp_path = __select_stamp()
+        stamp = cv2.imread(stamp_path, cv2.IMREAD_UNCHANGED)
         image = __detect_one_face(image, stamp, box)
 
     # 画像を保存
@@ -36,6 +38,7 @@ def detect_faces(
 
 
 
+# 1つの顔にスタンプを貼り付ける
 def __detect_one_face(image, stamp, box: BoundingBox):
 
     # 画像をリサイズ
@@ -62,3 +65,28 @@ def __detect_one_face(image, stamp, box: BoundingBox):
     image[y1:y2, x1:x2] = image_part
 
     return image
+
+
+
+# スタンプを選択
+def __select_stamp() -> str:
+
+    images_dir = "assets/images"
+
+    if random.random() < 0.1:
+        # レアスタンプ
+        images_dir += "/rare"
+    else:
+        # 通常スタンプ
+        images_dir += "/normal"
+
+
+    if not os.path.exists(images_dir) or not os.path.isdir(images_dir):
+        raise FileNotFoundError(f"Directory '{images_dir}' not found.")
+
+    images = [f for f in os.listdir(images_dir) if f.lower().endswith(('.png'))]
+
+    if not images:
+        raise FileNotFoundError("No images found in the directory.")
+
+    return os.path.join(images_dir, random.choice(images))
