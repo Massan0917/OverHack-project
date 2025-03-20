@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 ### 画像閲覧API
-@router.get("/api/face-detect")
+@router.get("/api/view")
 def query(db: Session = Depends(get_db)):
     result = crud.get_posts(db)
 

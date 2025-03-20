@@ -7,10 +7,10 @@ router = APIRouter()
 
 
 
-### 物体検出API
-@router.get("/api/face_detect")
+### 顔検出API
+@router.get("/api/face-detect")
 def face_detect(image_path: str):
     bounding_boxes: list[BoundingBox] = recognize_face(image_path)
     return {
-        "bounded_boxes": bounding_boxes
+        "bounded-boxes": bounding_boxes
     }
