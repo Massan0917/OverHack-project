@@ -12,5 +12,5 @@ router = APIRouter()
 def face_detect(image_path: str):
     bounding_boxes: list[BoundingBox] = recognize_face(image_path)
     return {
-        "bounded-boxes": bounding_boxes
+        "bounding_boxes": bounding_boxes
     }
