@@ -37,22 +37,28 @@ def detect_faces(
 
 
 def __detect_one_face(image, stamp, box: BoundingBox):
-    # 画像を BGR に変換（透過情報がない場合は無視）
-    if stamp.shape[2] == 4:
-        stamp = cv2.cvtColor(stamp, cv2.COLOR_BGRA2BGR)
 
     # 画像をリサイズ
     stamp = cv2.resize(stamp, (box.width, box.height))
+
+    if stamp.shape[2] == 4:  # 透過PNG対応
+        stamp_bgr = stamp[:, :, :3]  # BGRチャンネル
+        stamp_alpha = stamp[:, :, 3] / 255.0  # アルファチャンネル（0～1に正規化）
+    else:
+        stamp_bgr = stamp
+        stamp_alpha = np.ones((box.height, box.width))  # アルファがない場合は完全不透明
 
     # 貼り付ける領域の座標を計算
     x1, y1 = box.x_center - box.width // 2, box.y_center - box.height // 2
     x2, y2 = x1 + box.width, y1 + box.height
 
-    # 範囲を超えないように制限
-    x1, y1 = max(0, x1), max(0, y1)
-    x2, y2 = min(image.shape[1], x2), min(image.shape[0], y2)
+    image_part = image[y1:y2, x1:x2]
+
+    for c in range(3):  # B, G, R それぞれのチャンネルで合成
+        image_part[:, :, c] = (stamp_bgr[:, :, c] * stamp_alpha + image_part[:, :, c] * (1 - stamp_alpha)).astype(np.uint8)
+
 
     # 背景画像の該当部分を前景画像に置き換え
-    image[y1:y2, x1:x2] = stamp[:y2-y1, :x2-x1]
+    image[y1:y2, x1:x2] = image_part
 
     return image
