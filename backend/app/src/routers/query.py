@@ -9,7 +9,7 @@ router = APIRouter()
 
 
 ### 画像閲覧API
-@router.get("/api/face-detect")
+@router.get("/api/view")
 def query(db: Session = Depends(get_db)):
     result = crud.get_posts(db)
 
@@ -23,9 +23,9 @@ def query(db: Session = Depends(get_db)):
         "posts": [
             {
                 "id": post.id,
-                "user-name": post.user_name,
+                "user_name": post.user_name,
                 "comment": post.comment,
-                "masked-img-path": post.masked_img_path,
+                "masked_img_path": post.masked_img_path,
             } for post in filtered_result
         ],
     }

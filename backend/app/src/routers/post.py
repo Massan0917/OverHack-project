@@ -21,7 +21,7 @@ class Post(BaseModel):
 
 
 ### 投稿API
-@router.post("/api/face-detect")
+@router.post("/api/upload")
 def post(post: Post, db: Session = Depends(get_db)):
 
     date = datetime.datetime.now(
