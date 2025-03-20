@@ -1,5 +1,6 @@
-import numpy
-from matplotlib import pyplot, image
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as img
 from src.models.bounding_box import BoundingBox
 import requests
 import urllib
@@ -17,36 +18,36 @@ def detect_faces(
     url = urllib.parse.unquote(input_path)
     response = requests.get(url)
     file_contents = BytesIO(response.content)
-    img = image.imread(file_contents, format="jpg").copy()
+    image = img.imread(file_contents, format="jpg").copy()
 
     for box in bounding_boxes:
-        __detect_one_face(img, box)
+        __detect_one_face(image, box)
 
     # 画像を保存
     output_path = f"static/masked/{file_name}.jpg"
-    pyplot.imsave(f"{output_path}", img)
+    plt.imsave(f"{output_path}", image)
 
     output_url = "http://localhost:3000/" + output_path
 
     return output_url
 
-def __detect_one_face(img: numpy.ndarray, box: BoundingBox) -> numpy.ndarray:
+def __detect_one_face(image: np.ndarray, box: BoundingBox) -> np.ndarray:
     # TODO
 
     color = (1,0,0)
 
-    if img.dtype == numpy.uint8:
+    if image.dtype == np.uint8:
         color = tuple(int(c * 255) for c in color)  # 0-255 に変換
-    elif img.dtype == numpy.float32 or img.dtype == numpy.float64:
+    elif image.dtype == np.float32 or image.dtype == np.float64:
         color = tuple(c for c in color)  # そのまま使用
 
     x, y, w, h = box.x_center, box.y_center, box.width, box.height
 
     # 塗りつぶす領域の開始・終了座標を計算
-    x1, x2 = max(0, x - w // 2), min(img.shape[1], x + w // 2)
-    y1, y2 = max(0, y - h // 2), min(img.shape[0], y + h // 2)
+    x1, x2 = max(0, x - w // 2), min(image.shape[1], x + w // 2)
+    y1, y2 = max(0, y - h // 2), min(image.shape[0], y + h // 2)
 
     # 指定領域を塗りつぶし
-    img[y1:y2, x1:x2, :3] = color
+    image[y1:y2, x1:x2, :3] = color
 
-    return img
+    return image
