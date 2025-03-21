@@ -40,7 +40,7 @@
         imagePreview: '',
         name: '',
         comment: '',
-        boudingBoxes: [],
+        boundingBoxes: [],
         imagePath: '',
       };
     },
@@ -69,11 +69,11 @@
         axios.get(
           'http://localhost:3000/api/face-detect?image_path=' + self.imagePath,
         ).then( function( response ){
-          console.log( response );
-          if( response.data.bouding_boxes ){
-            self.boudingBoxes = response.data.bouding_boxes;
+          if( response.data.bounding_boxes.length > 0 ) {
+            self.boundingBoxes = response.data.bounding_boxes;
+            self.imagePreview = response.data.confirm_image_path;
           } else {
-            self.boudingBoxes = [];
+            self.boundingBoxes = [];
           }
         } ).catch( function( error ){
           console.log( error );
@@ -88,10 +88,8 @@
           name: self.name,
           comment: self.comment,
           image_path: self.imagePath,
-          bounding_boxes: self.boudingBoxes,
+          bounding_boxes: self.boundingBoxes,
         }
-
-        console.log( payload );
 
         axios.post(
           'http://localhost:3000/api/upload',
