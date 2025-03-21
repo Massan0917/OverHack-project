@@ -1,3 +1,7 @@
 **/__pycache__/**
 **/.DS_Store
-.db
+**.db
+
+static/**/**.jpg
+**.jpg
+!static/**/test**.jpg
