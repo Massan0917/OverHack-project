@@ -6,16 +6,12 @@
 </template>
 
 <script>
-
-import axios from 'axios'
-
 export default {
     components: {
     },
     data() {
       return {
         message : '',
-        posts: []
       }
     },
     mounted() {
@@ -29,19 +25,6 @@ export default {
       get_hoge() {
         return axios.get('http://localhost:3000/api/fuga')
       },
-
-      getPost() {
-        const self = this;
-        console.log('get post');
-
-        axios
-        .get('http://localhost:3000/api/view')
-        .then( function (response) {
-          self.posts = response.data;
-        }).catch(function (error) {
-          console.log(error);
-        });
-      }
     },
 }
 </script>
