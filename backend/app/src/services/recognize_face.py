@@ -1,5 +1,6 @@
 from ultralytics import YOLO
 from src.models.bounding_box import BoundingBox
+import os
 
 
 # 画像から顔を検出する
@@ -23,5 +24,9 @@ def recognize_face(image_path: str) -> list[BoundingBox]:
             width=int(shape[2]),
             height=int(shape[3]),
         ))
+
+    file_name = image_path[image_path.rfind('/') + 1:]
+    if file_name.endswith('.jpg'):
+        os.remove(file_name)
 
     return bounding_boxes
