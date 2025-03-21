@@ -28,6 +28,8 @@
 </template>
 
 <script>
+const axios = require("axios");
+
 export default {
   data() {
     return {
@@ -43,26 +45,45 @@ export default {
         this.image = file;
       }
     },
+
+    // 投稿確認画面へ遷移
     submitPost() {
-      if (!this.image || !this.name || !this.comment) {
+      const self = this;
+
+      if (!self.image || !self.name || !self.comment) {
         alert('全ての項目を入力してください');
         return;
       }
       // localStorageにデータを一時保存（画像はBase64に変換）
       const reader = new FileReader();
-      reader.readAsDataURL(this.image);
       reader.onload = () => {
-        const postData = {
-          image: reader.result,
-          name: this.name,
-          comment: this.comment
-        };
-        localStorage.setItem('postData', JSON.stringify(postData));
+        const formData = new FormData();
+        formData.append('image', self.image);
 
-        this.$router.push({ name: 'PostConfirm' });
+        // 画像をアップロード
+        axios.post( "http://localhost:3000/api/image", formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then( function ( response ) {
+          // 画像アップロード後
+          // 投稿データをlocalStorageに保存
+          const postData = {
+            image: reader.result,
+            name: self.name,
+            comment: self.comment,
+            imagePath: response.data.image_path,
+          };
+          localStorage.setItem('postData', JSON.stringify(postData));
+
+          self.$router.push({ name: 'PostConfirm' });
+        }).catch( function ( error ) {
+          console.log(error);
+        });
       };
-    }
-    }
+      reader.readAsDataURL(self.image);
+    },
+  }
 };
 </script>
 
