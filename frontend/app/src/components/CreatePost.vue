@@ -4,7 +4,7 @@
       <!-- 画像アップロード -->
       <div class="mb-6">
         <label class="block text-orange-600 font-semibold mb-2">画像アップロード</label>
-        <input type="file" @change="onFileChange" accept="image/*" class="border border-orange-300 w-full p-3 rounded-lg bg-white">
+        <input type="file" ref="file" @change="onFileChange" accept="image/*" class="border border-orange-300 w-full p-3 rounded-lg bg-white">
 
         <!-- 画像プレビュー（選択後に表示） -->
         <div v-if="imagePreview" class="mt-4 text-center">
@@ -72,6 +72,7 @@ export default {
     removeImage() {
       this.image = null;
       this.imagePreview = null;
+      this.$refs.file.value = '';
     },
 
     // 投稿確認画面へ遷移
