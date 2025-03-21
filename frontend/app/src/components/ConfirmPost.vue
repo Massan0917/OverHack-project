@@ -25,8 +25,8 @@
           再検出
         </button>
 
-        <!-- 投稿ボタン（次の画面へ遷移） -->
-        <button @click="submitPost" class="bg-red-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1 mx-2">
+         <!-- 投稿ボタン（次の画面へ遷移） -->
+         <button @click="submitPost" class="bg-red-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 flex-1 mx-2">
           投稿！
         </button>
 
@@ -54,7 +54,7 @@ export default {
       imagePreview: '',
       name: '',
       comment: '',
-      boudingBoxes: [],
+      boundingBoxes: [],
       imagePath: '',
     };
   },
@@ -83,11 +83,11 @@ export default {
       axios.get(
         'http://localhost:3000/api/face-detect?image_path=' + self.imagePath,
       ).then( function( response ){
-        console.log( response );
-        if( response.data.bouding_boxes ){
-          self.boudingBoxes = response.data.bouding_boxes;
+        if( response.data.bounding_boxes.length > 0 ) {
+          self.boundingBoxes = response.data.bounding_boxes;
+          self.imagePreview = response.data.confirm_image_path;
         } else {
-          self.boudingBoxes = [];
+          self.boundingBoxes = [];
         }
       } ).catch( function( error ){
         console.log( error );
@@ -102,10 +102,8 @@ export default {
         name: self.name,
         comment: self.comment,
         image_path: self.imagePath,
-        bounding_boxes: self.boudingBoxes,
-      }
-
-      console.log( payload );
+        bounding_boxes: self.boundingBoxes,
+      };
 
       axios.post(
         'http://localhost:3000/api/upload',
