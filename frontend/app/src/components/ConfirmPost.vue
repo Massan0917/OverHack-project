@@ -32,20 +32,27 @@
   </template>
   
   <script>
+  const axios = require("axios");
+
   export default {
     data() {
       return {
         imagePreview: '',
         name: '',
         comment: '',
+        boudingBoxes: [],
+        imagePath: '',
       };
     },
     created() {
       const postData = JSON.parse(localStorage.getItem('postData'));
       if (postData) {
         this.imagePreview = postData.image;
+        this.imagePath = postData.imagePath;
         this.name = postData.name;
         this.comment = postData.comment;
+
+        this.recognizeFace();
       } else {
         this.$router.push('/');
       }
@@ -54,9 +61,48 @@
       reloadPage() {
         window.location.reload();
       },
+
+      // 顔認識処理
+      recognizeFace() {
+        const self = this;
+
+        axios.get(
+          'http://localhost:3000/api/face-detect?image_path=' + self.imagePath,
+        ).then( function( response ){
+          console.log( response );
+          if( response.data.bouding_boxes ){
+            self.boudingBoxes = response.data.bouding_boxes;
+          } else {
+            self.boudingBoxes = [];
+          }
+        } ).catch( function( error ){
+          console.log( error );
+        } );
+      },
+
+      // 投稿処理
       submitPost() {
-        // DBへの登録処理はここで追加（後ほど）
-        this.$router.push('/complete');
+        const self = this;
+
+        const payload = {
+          name: self.name,
+          comment: self.comment,
+          image_path: self.imagePath,
+          bounding_boxes: self.boudingBoxes,
+        }
+
+        console.log( payload );
+
+        axios.post(
+          'http://localhost:3000/api/upload',
+          payload
+        ).then( function( response ){
+          console.log( response );
+          localStorage.removeItem('postData');
+					self.$router.push('/complete');
+				} ).catch( function( error ){
+          console.log( error );
+        } );
       },
       reselectImage() {
         this.$router.push('/');
