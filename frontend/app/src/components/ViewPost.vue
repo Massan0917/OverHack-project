@@ -14,7 +14,8 @@ export default {
     },
     data() {
       return {
-        message : ''
+        message : '',
+        posts: []
       }
     },
     mounted() {
@@ -27,6 +28,19 @@ export default {
       //FastAPI(http://localhost:3000/api/hoge)にgetをリクエスト
       get_hoge() {
         return axios.get('http://localhost:3000/api/fuga')
+      },
+
+      getPost() {
+        const self = this;
+        console.log('get post');
+
+        axios
+        .get('http://localhost:3000/api/view')
+        .then( function (response) {
+          this.posts = response.data;
+        }).catch(function (error) {
+          console.log(error);
+        });
       }
     },
 }
@@ -38,4 +52,3 @@ h1 {
   color: #42b983;
 }
 </style>
-
