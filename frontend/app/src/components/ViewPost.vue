@@ -37,7 +37,7 @@ export default {
         axios
         .get('http://localhost:3000/api/view')
         .then( function (response) {
-          this.posts = response.data;
+          self.posts = response.data;
         }).catch(function (error) {
           console.log(error);
         });
