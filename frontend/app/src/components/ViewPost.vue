@@ -6,15 +6,12 @@
 </template>
 
 <script>
-
-import axios from 'axios'
-
 export default {
     components: {
     },
     data() {
       return {
-        message : ''
+        message : '',
       }
     },
     mounted() {
@@ -27,7 +24,7 @@ export default {
       //FastAPI(http://localhost:3000/api/hoge)にgetをリクエスト
       get_hoge() {
         return axios.get('http://localhost:3000/api/fuga')
-      }
+      },
     },
 }
 </script>
@@ -38,4 +35,3 @@ h1 {
   color: #42b983;
 }
 </style>
-

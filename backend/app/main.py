@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 import uvicorn
-from src.routers import post, query, face_detect
+from src.routers import post, query, face_detect, image
 from test import image_test
 from src.database.database import Base, engine
 
@@ -19,6 +19,7 @@ app.add_middleware(
 # staticフォルダを公開
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+app.include_router(image.router)
 app.include_router(post.router)
 app.include_router(face_detect.router)
 app.include_router(query.router)

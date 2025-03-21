@@ -29,6 +29,19 @@ const config = {
     wrapAround: true,
 }
 
+function getPost() {
+        const self = this;
+        console.log('get post');
+
+        axios
+        .get('http://localhost:3000/api/view')
+        .then( function (response) {
+          self.posts = response.data;
+        }).catch(function (error) {
+          console.log(error);
+        });
+      }
+
 </script>
 
 
