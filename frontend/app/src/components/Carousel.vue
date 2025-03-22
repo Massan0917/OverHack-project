@@ -1,21 +1,35 @@
 <template>
-	<Carousel v-bind="config">
-		<Slide v-for="image in images" :key="image.id">
-        		<img :src="image.url" alt="image" />
-    		</Slide>
+  <BackgroundWrapper>
+    <ContentWrapper class="w-full max-w-screen-lg">
+      <div class="flex flex-col items-center space-y-4">
+        <!-- 画像のみのカルーセル -->
+        <Carousel v-bind="config">
+          <Slide v-for="image in images" :key="image.id">
+            <img :src="image.url" alt="image" class="rounded-lg w-full h-auto object-cover max-h-[500px]" />
+          </Slide>
+        </Carousel>
 
-	</Carousel>
-	<Carousel v-bind="config">
-		<Slide v-for="image in images" :key="image.id">
-			{{image.id}}
-    		</Slide>
-	</Carousel>
+        <!-- 名前 & コメントのカルーセル -->
+        <Carousel v-bind="config">
+          <Slide v-for="image in images" :key="image.id">
+            <div class="p-6 border rounded-lg shadow-lg bg-white text-center text-xl">
+              <p class="text-2xl font-bold">{{ image.name }}</p>
+              <p class="text-lg text-gray-600">{{ image.comment }}</p>
+            </div>
+          </Slide>
+        </Carousel>
+      </div>
+    </ContentWrapper>
+  </BackgroundWrapper>
 </template>
+
 
 <script setup>
 import { onMounted } from "vue";
 import 'vue3-carousel/carousel.css'
 import { Carousel, Slide, Navigation } from 'vue3-carousel'
+import BackgroundWrapper from './BackgroundWrapper.vue';
+import ContentWrapper from './ContentWrapper.vue';
 const axios = require("axios");
 
 // const images = Array.from({ length: 10 }, (_, index) => ({
@@ -26,11 +40,11 @@ const axios = require("axios");
 let images = [];
 
 const config = {
-  autoplay: 1000,
-  height: 200,
-  itemsToShow: 2,
-  gap: 5,
-  wrapAround: true,
+    autoplay: 1500,
+    height: 200,
+    itemsToShow: 1,
+    gap: 5,
+    wrapAround: true,
 }
 
 function getPost() {
@@ -44,10 +58,8 @@ function getPost() {
       }
     )
     .then( function (response) {
-      console.log(response.data);
 
       const posts = [];
-      console.log(response.data.posts);
       for (let i = 0; i < response.data.posts.length; i++) {
         posts.push({
           id: response.data.posts[i].id,
@@ -56,7 +68,6 @@ function getPost() {
           comment: response.data.posts[i].comment
         });
       }
-      console.log(posts);
       images = posts;
     }).catch(function (error) {
       console.log(error);
@@ -81,5 +92,15 @@ img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.w-full {
+  width: 100vw;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
