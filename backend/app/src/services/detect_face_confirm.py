@@ -15,10 +15,7 @@ def detect_faces_confirm(
 ) -> bool:
 
     # 画像を読み込む
-    url = urllib.parse.unquote(input_path)
-    response = urllib.request.urlopen(url)
-    image_array = np.asarray(bytearray(response.read()), dtype=np.uint8)
-    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+    image = cv2.imread(input_path, cv2.IMREAD_COLOR)
 
     stamp_path = "assets/images/test.png"
     stamp = cv2.imread(stamp_path, cv2.IMREAD_UNCHANGED)
@@ -32,8 +29,7 @@ def detect_faces_confirm(
     output_path = f"static/confirm/{file_name}.jpg"
     cv2.imwrite(output_path, image)
 
-    output_url = "http://localhost:3000/" + output_path
-    return output_url
+    return output_path
 
 
 

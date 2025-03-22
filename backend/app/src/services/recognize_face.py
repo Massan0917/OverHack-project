@@ -25,8 +25,4 @@ def recognize_face(image_path: str) -> list[BoundingBox]:
             height=int(shape[3]),
         ))
 
-    file_name = image_path[image_path.rfind('/') + 1:]
-    if file_name.endswith('.jpg'):
-        os.remove(file_name)
-
     return bounding_boxes

@@ -23,5 +23,5 @@ async def image( image: UploadFile = File() ):
         shutil.copyfileobj(image.file, file_object)
 
     return {
-        "image_path": 'http://localhost:3000/' + image_path,
+        "image_path": image_path,
     }

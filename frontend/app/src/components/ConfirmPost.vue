@@ -81,11 +81,16 @@ export default {
       const self = this;
 
       axios.get(
-        'http://localhost:3000/api/face-detect?image_path=' + self.imagePath,
+        process.env.VUE_APP_BASE_URL + '/api/face-detect?image_path=' + self.imagePath,
+        {
+          headers: {
+            'ngrok-skip-browser-warning': 'value'
+          }
+        }
       ).then( function( response ){
         if( response.data.bounding_boxes.length > 0 ) {
           self.boundingBoxes = response.data.bounding_boxes;
-          self.imagePreview = response.data.confirm_image_path;
+          self.imagePreview = process.env.VUE_APP_BASE_URL + '/' + response.data.confirm_image_path;
         } else {
           self.boundingBoxes = [];
         }
@@ -106,7 +111,7 @@ export default {
       };
 
       axios.post(
-        'http://localhost:3000/api/upload',
+        process.env.VUE_APP_BASE_URL + '/api/upload',
         payload
       ).then( function( response ){
         console.log( response );
