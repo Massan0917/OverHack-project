@@ -17,10 +17,7 @@ def detect_faces(
 ) -> bool:
 
     # 画像を読み込む
-    url = urllib.parse.unquote(input_path)
-    response = urllib.request.urlopen(url)
-    image_array = np.asarray(bytearray(response.read()), dtype=np.uint8)
-    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
+    image = cv2.imread(input_path, cv2.IMREAD_COLOR)
 
     # 合成（例: 中心(200, 150)、幅100、高さ80）
     for box in bounding_boxes:
@@ -33,8 +30,7 @@ def detect_faces(
     output_path = f"static/masked/{file_name}.jpg"
     cv2.imwrite(output_path, image)
 
-    output_url = "http://localhost:3000/" + output_path
-    return output_url
+    return output_path
 
 
 

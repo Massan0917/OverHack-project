@@ -90,10 +90,11 @@ export default {
         formData.append('image', self.image);
 
         // 画像をアップロード
-        axios.post( "http://localhost:3000/api/image", formData, {
+        axios.post( process.env.VUE_APP_BASE_URL + "/api/image", formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-          },
+            'ngrok-skip-browser-warning': 'value'
+          }
         }).then( function ( response ) {
           // 画像アップロード後
           // 投稿データをlocalStorageに保存
