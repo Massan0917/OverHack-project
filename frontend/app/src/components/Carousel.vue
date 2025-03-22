@@ -3,14 +3,14 @@
     <ContentWrapper class="w-full max-w-screen-lg">
       <div class="flex flex-col items-center space-y-4">
         <!-- 画像のみのカルーセル -->
-        <Carousel v-bind="config">
+        <Carousel v-bind="configImage">
           <Slide v-for="image in images" :key="image.id">
             <img :src="image.url" alt="image" class="rounded-lg w-full h-auto object-cover max-h-[500px]" />
           </Slide>
         </Carousel>
 
         <!-- 名前 & コメントのカルーセル -->
-        <Carousel v-bind="config">
+        <Carousel v-bind="configLabel">
           <Slide v-for="image in images" :key="image.id">
             <div class="p-6 border rounded-lg shadow-lg bg-white text-center text-xl">
               <p class="text-2xl font-bold">{{ image.name }}</p>
@@ -39,13 +39,22 @@ const axios = require("axios");
 
 let images = [];
 
-const config = {
-    autoplay: 1500,
-    height: 200,
-    itemsToShow: 1,
-    gap: 5,
-    wrapAround: true,
-}
+const configImage = {
+  autoplay: 1500,
+  height: 600,
+  itemsToShow: 1,
+  gap: 5,
+  wrapAround: true,
+};
+
+const configLabel = {
+  autoplay: 1500,
+  height: 100,
+  itemsToShow: 1,
+  gap: 5,
+  wrapAround: true,
+};
+
 
 function getPost() {
   axios
@@ -60,6 +69,7 @@ function getPost() {
     .then( function (response) {
 
       const posts = [];
+      console.log(response.data.posts.length);
       for (let i = 0; i < response.data.posts.length; i++) {
         posts.push({
           id: response.data.posts[i].id,
